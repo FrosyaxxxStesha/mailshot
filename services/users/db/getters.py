@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.utils.http import urlsafe_base64_decode
 
 from services.general.db.getters import SingleKwargSafeGetter
@@ -18,7 +19,7 @@ class UserSafeGetter(SingleKwargSafeGetter):
     """
     model = User
     handler_starts_with: str = "get_user_by_"
-    extra_exceptions = (model.DoesNotExists,)
+    extra_exceptions = (model.DoesNotExists, ValidationError)
 
     def get_user_by_uidb64(self, uidb64: str) -> User:
         """
@@ -35,3 +36,5 @@ class UserSafeGetter(SingleKwargSafeGetter):
         user = self.model.objects.get(email=email)
         return user
 
+
+user_safe_getter = UserSafeGetter()
