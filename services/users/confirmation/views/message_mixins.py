@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import redirect
 
 
 class ValidationMessageViewMixin:
@@ -17,7 +18,7 @@ class ValidationMessageViewMixin:
         """
         self.set_user_object(form)
         self.get_message(self.object).send()
-        return HttpResponse(self.get_success_url())
+        return redirect(self.get_success_url())
 
     def get_message_class(self):
         """
