@@ -3,6 +3,8 @@ from typing import Any
 from django.conf import settings
 from django.core.mail import send_mail
 
+from users.tasks import async_send
+
 
 class SenderMixin:
     """
@@ -67,6 +69,5 @@ class EmailSenderMixin(SenderMixin):
         Специализированный метод для отправки сообщения средствами
         электронной почты
         """
-        email_response = send_mail(**self.get_send_kwargs())
-        return email_response
+        async_send(**self.get_send_kwargs())
 
